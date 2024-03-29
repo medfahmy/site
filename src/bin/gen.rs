@@ -56,18 +56,19 @@ fn header() -> Markup {
         ("about", "About"),
         ("blog", "Blog"),
         ("projects", "Projects"),
+        ("contact", "Contact"),
     ];
 
     html! {
-        header ."sidebar-content" {
+        div ."sidebar-content" {
             div ."name" {
                 a href="/" {
-                    h1 { "med fahmy" }
+                    h1 { "Mohamed Fahmy" }
                 }
             }
 
             nav {
-                ul {
+                ul ."sidebar-nav" {
                     @for (link, title) in nav {
                         li ."nav-item" {
                             a href=(link) { (title) }
@@ -76,7 +77,7 @@ fn header() -> Markup {
                 }
             }
 
-            input id="search" type="search" placeholder="search" disabled;
+            input id="search" type="search" placeholder="Search";
         }
     }
 }
