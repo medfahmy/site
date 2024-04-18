@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::Write;
-use maud::{html, Markup, Render, DOCTYPE};
+use maud::{html, Markup, Render, DOCTYPE, PreEscaped};
 
 fn main() {
     let index = page("mohamed fahmy", index());
@@ -15,23 +15,24 @@ fn main() {
 }
 
 fn index() -> Markup {
-    let content = std::fs::read_to_string("content/blog/intro.md").unwrap();
+    let md = std::fs::read_to_string("content/index.md").unwrap();
+    let html = markdown::to_html(&md);
 
-    html! {
-        h1 { "Lorem Ipsum" }
-        p { (content) }
-    }
+    html! { (PreEscaped(html)) }
 }
 
 fn page(title: &str, content: Markup) -> Markup {
     html! {
-        (head(title))
-        body {
-            div ."wrapper" {
-                div ."sidebar" { (header()) }
+        (DOCTYPE)
+        html lang="en" {
+            (head(title))
+            body {
+                div ."wrapper" {
+                    div ."sidebar" { (header()) }
 
-                main ."main" {
-                    (content)
+                    main ."main" {
+                        (content)
+                    }
                 }
             }
         }
@@ -40,8 +41,6 @@ fn page(title: &str, content: Markup) -> Markup {
 
 fn head(title: &str) -> Markup {
     html! {
-        (DOCTYPE)
-        html lang="en"
         head {
             meta charset="utf-8";
             meta name="viewport" content="width=device-width, initial-scale=1.0";
